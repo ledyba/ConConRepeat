@@ -34,8 +34,7 @@ sudo apt-get install libopencv-dev cmake imagemagick
 ```bash
 cmake .
 make
-bash run.sh anime.mkv
-./ConConRepeat anime.mkv output-dir <skip-duration-in-ms>
+bash run.sh anime.mkv output-dir <skip-duration-in-sec>
 ```
 
 # こんこんリピートって何？

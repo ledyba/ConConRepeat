@@ -1,0 +1,9 @@
+.idea/
+CMakeFiles/
+gifs/
+cmake_install.cmake
+CMakeCache.txt
+core
+*.mp4
+*.mkv
+ConConRepeat

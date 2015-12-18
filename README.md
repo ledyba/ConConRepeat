@@ -37,6 +37,10 @@ make
 bash run.sh anime.mkv output-dir <skip-duration-in-sec>
 ```
 
+# License
+
+GPL v3 or later.
+
 # こんこんリピートって何？
 
 　サンプルの最後の３つの動画は「[いなり、こんこん、恋いろは。](http://inarikonkon.jp/)」の限定OVAにだけ出てくるコンちゃん（顕現バージョン）です。つまり、そういうことです。

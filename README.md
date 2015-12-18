@@ -1,6 +1,6 @@
 # ConConRepeat（こんこんリピート）
 
-A software to create gif-movie from animation video files.
+A software to create endless-gif-loops from animation video files.
 
 アニメの動画を与えると、自動でリピート動画を作ってくれるソフトウェア
 

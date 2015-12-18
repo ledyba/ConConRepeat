@@ -67,13 +67,14 @@ int main(int argc, char** argv) {
 			//double const dl2 = norm(target, now, NORM_L2) / (width*height*3);
 			if(dinf < 0.01) {
 				near = j;
+				cfar = far;
 			}
 			mind = std::min(mind, dinf);
 			if(dinf > 0.01){
 				far++;
 			}
 		}
-		auto dtime = (double)far/near;
+		auto dtime = (double)cfar/near;
 		if(mind < 0.01 && dtime > 0.1){
 			cout << "Found(" << found << "): " <<  (current - near) << " -> " << (current) << ", "<< ((double)near/fps) <<"sec, range=("<<mind<<", "<<dtime<<")"<< endl;
 			for(int j=near, f=0;j>=0;--j,++f) {

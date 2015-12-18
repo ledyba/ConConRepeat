@@ -5,19 +5,16 @@
 using namespace std;
 using namespace cv;
 double calcDiff(Mat a, Mat b){
-	double d = 0;
-	auto aptr = a.begin<Vec3b>();
-	auto bptr = b.begin<Vec3b>();
-	auto aend = a.end<Vec3b>();
+	int d = 0;
+	auto aptr = a.begin<unsigned char>();
+	auto bptr = b.begin<unsigned char>();
+	auto aend = a.end<unsigned char>();
 	for(;aptr != aend; ++aptr, ++bptr){
-		for(int i=0;i<3;++i){
-			double val = abs((*aptr)[i]-(*bptr)[i]);
-			if(val > 25.6){
-				d += 1;
-			}
+		if(abs((*aptr)-(*bptr)) > 20){
+			++d;
 		}
 	}
-	return d/(a.rows * a.cols * a.channels());
+	return (double)d / (double)(a.rows * a.cols * a.channels());
 }
 
 int main(int argc, char** argv) {
@@ -44,7 +41,7 @@ int main(int argc, char** argv) {
 	double const fps = cap.get(CV_CAP_PROP_FPS);
 	int const width = 640;
 	int const height = 360;
-	vector<Mat> frames((int)(fps*3));
+	vector<Mat> frames((int)(fps*2.5));
 	int i = 0;
 	namedWindow("frame",1);
 	int found = 0;
@@ -58,8 +55,8 @@ int main(int argc, char** argv) {
 		if(waitKey(30) >= 0) break;
 		int near = 0;
 		int far = 0;
+		int cfar = 0;
 		bool sameFrame = false;
-		double maxd = 0;
 		double mind = DBL_MAX;
 		for(int j=(int)(fps/2);j<frames.size();++j) {
 			Mat& target = frames[((i-j) + frames.size()) % frames.size()];
@@ -67,15 +64,18 @@ int main(int argc, char** argv) {
 				break;
 			}
 			double const dinf = calcDiff(target, now);
-			double const dl2 = norm(target, now, NORM_L2) / (width*height*3);
-			if(dinf <= mind) {
+			//double const dl2 = norm(target, now, NORM_L2) / (width*height*3);
+			if(dinf < 0.01) {
 				near = j;
 			}
-			maxd = std::max(maxd, dl2);
 			mind = std::min(mind, dinf);
+			if(dinf > 0.01){
+				far++;
+			}
 		}
-		if(mind < 0.01 && maxd > 0.10){
-			cout << "Found(" << found << "): " <<  (current - near) << " -> " << (current) << ", "<< ((double)near/fps) <<"sec, range=("<<mind<<", "<<maxd<<")"<< endl;
+		auto dtime = (double)far/near;
+		if(mind < 0.01 && dtime > 0.1){
+			cout << "Found(" << found << "): " <<  (current - near) << " -> " << (current) << ", "<< ((double)near/fps) <<"sec, range=("<<mind<<", "<<dtime<<")"<< endl;
 			for(int j=near, f=0;j>=0;--j,++f) {
 				std::string fname = dir+cv::format("/anime-%03d-%03d.png",found,f);
 				Mat& frame = frames[((i-j) + frames.size()) % frames.size()];

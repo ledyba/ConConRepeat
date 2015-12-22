@@ -12,7 +12,7 @@ if [ ! -f "./ConConRepeat" ]; then
 fi
 
 tdir=`mktemp -d`
-echo ./ConConRepeat $1 \"$tdir\" $3
-./ConConRepeat $1 "$tdir" $3
+echo ./ConConRepeat \"$1\" \"$tdir\" \"$3\"
+./ConConRepeat "$1" "$tdir" "$3"
 echo bash ../gifnize.sh 0 "$tdir"
 bash gifnize.sh "$tdir" "$2" 0

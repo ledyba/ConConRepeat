@@ -12,6 +12,8 @@ if [ ! -f "./ConConRepeat" ]; then
 fi
 
 tdir=`mktemp -d`
+trap "rm -rf ${tdir}" EXIT
+
 echo ./ConConRepeat \"$1\" \"$tdir\" \"$3\"
 ./ConConRepeat "$1" "$tdir" "$3"
 echo bash ../gifnize.sh 0 "$tdir"

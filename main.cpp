@@ -47,12 +47,14 @@ int main(int argc, char** argv) {
 	int found = 0;
 	Mat frame;
 	cap.set(CV_CAP_PROP_POS_MSEC, skip);
-	while(cap.read(frame)){
+	uint64_t total = 0;
+	while(cap.read(frame)) {
+		++total;
 		int const current = (int)cap.get(CV_CAP_PROP_POS_FRAMES);
 		Mat& now = frames[i];
 		cv::resize(frame, now, cv::Size(width,height),cv::INTER_CUBIC);
 		imshow("frame", now);
-		if(waitKey(30) >= 0) break;
+		//if(waitKey(30) >= 0) break;
 		int near = 0;
 		int far = 0;
 		int cfar = 0;
@@ -89,5 +91,6 @@ int main(int argc, char** argv) {
 		}
 		i = (i+1) % frames.size();
 	}
+	cout << "total: " << total << " frames processed." << endl;
 	return 0;
 }
